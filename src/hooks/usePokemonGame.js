@@ -45,6 +45,14 @@ export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
       setTimeout(() => setFlipped([]), 800);
     }
   }, [flipped]);
+  // detecta fin del juego por fallos
+    useEffect(() => {
+    if (maxFails !== null && fails >= maxFails) {
+      setTimeout(() => {
+        resetGame();
+      }, 3000);
+    }
+  }, [fails, maxFails]);
 
   const handleFlip = index => {
     if (flipped.length < 2 && !flipped.includes(index) && !matched.includes(index))

@@ -111,8 +111,8 @@ function App() {
       <p>Intentos: {attempts} | Fallos: {fails}</p>
 
       {isGameOver && <p style={{ color: 'green' }}>¡Ganaste!</p>}
-      {isGameLost && <p style={{ color: 'red' }}>Fin del juego. Superaste el máximo de fallos.</p>}
-
+      {isGameLost && <p style={{ color: 'red' }}>Fin del juego. Superaste el máximo de fallos. REINICIANDO JUEGO</p>}
+      
       <GameBoard cards={cards} flipped={flipped} matched={matched} handleFlip={handleFlip} />
     </div>
   );

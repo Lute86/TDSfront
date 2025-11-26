@@ -1,0 +1,116 @@
+/* tamaño/utility (estilo tipo tailwind names) */
+.w-24 { width: 6rem; }
+.h-24 { height: 6rem; }
+.rounded-2xl { border-radius: 1rem; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+
+/* Card flip container */
+.card-container {
+  width: 6rem;
+  height: 6rem;
+  perspective: 900px;
+  -webkit-perspective: 900px;
+}
+
+/* inner: se rota */
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(.2,.9,.3,1);
+  border-radius: 0.75rem;
+}
+
+/* aplicar rotación cuando esté volteada */
+.card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* caras */
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* front visible inicialmente */
+.card-front {
+  transform: rotateY(0deg);
+  background-color: #d1d5db; /* gris */
+}
+
+/* back girada 180 para mostrarse cuando inner gira */
+.card-back {
+  transform: rotateY(180deg);
+  background-color: transparent; /* Fondo transparente */
+  box-shadow: none; /* Sin sombra */
+}
+
+/* imagen del pokemon (evita relleno negro) */
+.pokemon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.25));
+}
+
+/* texto pregunta */
+.text-2xl {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.card-container {
+  width: 6rem;
+  height: 6rem;
+  perspective: 900px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  border-radius: 1rem;
+}
+
+.card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Cara frontal */
+.card-front {
+  background: #ccc;
+}
+
+/* Cara trasera */
+.card-back {
+  transform: rotateY(180deg);
+  background: black;        /* 👈 FONDO NEGRO */
+}
+
+
+

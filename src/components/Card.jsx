@@ -1,29 +1,24 @@
+import './Card.css';
+
 export default function Card({ flipped, matched, image, onClick }) {
-  
-  // if (!image) return null; //evita crasheo
+  const isFlipped = flipped || matched;
+
   return (
-    <div
-      onClick={onClick}
-      role="button"
-      aria-label="Carta Pokémon"
-      style={{
-        width: 100,
-        height: 100,
-        backgroundColor: flipped || matched ? '#fff' : '#ccc',
-        backgroundImage: flipped || matched ? `url(${image})` : 'none',
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        borderRadius: 10,
-        cursor: 'pointer',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        transition: 'transform 0.3s ease',
-        transform: flipped || matched ? 'rotateY(180deg)' : 'rotateY(0deg)',
-      }}
-    >
-      {!flipped && !matched && <span style={{ fontSize: 24 }}>?</span>}
+    <div className="card-container" onClick={onClick} role="button" aria-label="Carta Pokémon">
+
+      <div className={`card-inner ${isFlipped ? "is-flipped" : ""}`}>
+
+        {/* Frente */}
+        <div className="card-face card-front">
+          <span className="text-2xl">?</span>
+        </div>
+
+        {/* Dorso con imagen */}
+        <div className="card-face card-back">
+          <img src={image} alt="pokemon" className="pokemon-img" />
+        </div>
+
+      </div>
     </div>
   );
 }
