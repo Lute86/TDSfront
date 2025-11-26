@@ -13,7 +13,15 @@ export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
     const fetchPokemons = async () => {
       const randomIds = Array.from({ length: pairsCount }, () => Math.floor(Math.random() * 150) + 1);
       const data = await Promise.all(randomIds.map(id => fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => res.json())));
-      setPokemons(data);
+      const optimized = data.map(poke => ({
+        id: poke.id,
+        name: poke.name,
+        image: poke.sprites.other['official-artwork'].front_default
+      }));// optimisa carga img 
+
+      setPokemons(optimized);
+
+      //setPokemons(data);
     };
     fetchPokemons();
   }, [pairsCount]);

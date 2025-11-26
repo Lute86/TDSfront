@@ -1,4 +1,6 @@
 export default function Card({ flipped, matched, image, onClick }) {
+  
+  // if (!image) return null; //evita crasheo
   return (
     <div
       onClick={onClick}

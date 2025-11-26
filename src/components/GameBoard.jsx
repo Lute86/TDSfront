@@ -16,7 +16,8 @@ export default function GameBoard({ cards, flipped, matched, handleFlip }) {
           key={i}
           flipped={flipped.includes(i)}
           matched={matched.includes(i)}
-          image={card.sprites.front_default}
+          //image={card.sprites.front_default}
+          image={card.image}
           onClick={() => handleFlip(i)}
         />
       ))}
