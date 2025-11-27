@@ -17,7 +17,10 @@ export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
     const fetchPokemons = async () => {
       setLoading(true);
 
-      const randomIds = generateUniqueIds(pairsCount);
+      const randomIds = Array.from(
+        { length: pairsCount },
+        () => Math.floor(Math.random() * 150) + 1
+      );
 
       const data = await Promise.all(
         randomIds.map(id =>
@@ -36,8 +39,7 @@ export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
     };
 
     fetchPokemons();
-  }, [pairsCount, reloadToken]);
-
+  }, [pairsCount, reloadToken]); // <- ahora recarga al reset
 
   // Duplicar y barajar
   useEffect(() => {

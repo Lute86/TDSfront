@@ -1,4 +1,4 @@
-import './Card.css';
+import '../styles/Card.css';
 
 export default function Card({ flipped, matched, image, onClick }) {
   const isFlipped = flipped || matched;
