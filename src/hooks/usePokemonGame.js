@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { generateUniqueIds } from '../utils/generateUniqueIds';
 
 export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
   const [pokemons, setPokemons] = useState([]);
