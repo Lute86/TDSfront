@@ -7,24 +7,38 @@ export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
   const [matched, setMatched] = useState([]);
   const [attempts, setAttempts] = useState(0);
   const [fails, setFails] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const [reloadToken, setReloadToken] = useState(0); // <- fuerza reload al reset
 
   // Obtener pokémon aleatorios
   useEffect(() => {
     const fetchPokemons = async () => {
-      const randomIds = Array.from({ length: pairsCount }, () => Math.floor(Math.random() * 150) + 1);
-      const data = await Promise.all(randomIds.map(id => fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => res.json())));
+      setLoading(true);
+
+      const randomIds = Array.from(
+        { length: pairsCount },
+        () => Math.floor(Math.random() * 150) + 1
+      );
+
+      const data = await Promise.all(
+        randomIds.map(id =>
+          fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => res.json())
+        )
+      );
+
       const optimized = data.map(poke => ({
         id: poke.id,
         name: poke.name,
-        image: poke.sprites.other['official-artwork'].front_default
-      }));// optimisa carga img 
+        image: poke.sprites.other['official-artwork'].front_default,
+      }));
 
       setPokemons(optimized);
-
-      //setPokemons(data);
+      setLoading(false);
     };
+
     fetchPokemons();
-  }, [pairsCount]);
+  }, [pairsCount, reloadToken]); // <- ahora recarga al reset
 
   // Duplicar y barajar
   useEffect(() => {
@@ -39,14 +53,18 @@ export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
     if (flipped.length === 2) {
       const [a, b] = flipped;
       const match = cards[a].id === cards[b].id;
+
       if (match) setMatched(prev => [...prev, a, b]);
       else setFails(f => f + 1);
+
       setAttempts(a => a + 1);
+
       setTimeout(() => setFlipped([]), 800);
     }
   }, [flipped]);
-  // detecta fin del juego por fallos
-    useEffect(() => {
+
+  // Fin del juego por fallos
+  useEffect(() => {
     if (maxFails !== null && fails >= maxFails) {
       setTimeout(() => {
         resetGame();
@@ -55,21 +73,38 @@ export function usePokemonGame({ pairsCount = 8, maxFails = null }) {
   }, [fails, maxFails]);
 
   const handleFlip = index => {
-    if (flipped.length < 2 && !flipped.includes(index) && !matched.includes(index))
+    if (
+      flipped.length < 2 &&
+      !flipped.includes(index) &&
+      !matched.includes(index)
+    ) {
       setFlipped([...flipped, index]);
+    }
   };
 
   const resetGame = () => {
-    setPokemons([]);
-    setCards([]);
     setMatched([]);
     setFlipped([]);
     setAttempts(0);
     setFails(0);
+
+    // fuerza a useEffect a recargar pokemons
+    setReloadToken(t => t + 1);
   };
 
   const isGameOver = matched.length === cards.length && cards.length > 0;
   const isGameLost = maxFails !== null && fails >= maxFails;
 
-  return { cards, flipped, matched, attempts, fails, isGameOver, isGameLost, handleFlip, resetGame };
+  return {
+    cards,
+    flipped,
+    matched,
+    attempts,
+    fails,
+    loading,
+    isGameOver,
+    isGameLost,
+    handleFlip,
+    resetGame,
+  };
 }

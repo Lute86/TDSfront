@@ -1,12 +1,28 @@
 import { useState } from 'react';
 import { usePokemonGame } from './hooks/usePokemonGame';
 import GameBoard from './components/GameBoard';
-import "./styles/Pokeball.css"
+import PokeballLoader from './components/PokeballLoader';
+import './styles/Pokeball.css';
+import './styles/Card.css';
 
 function App() {
   const [difficulty, setDifficulty] = useState({ pairs: 8, maxFails: null });
-  const { cards, flipped, matched, attempts, fails, isGameOver, isGameLost, handleFlip, resetGame } =
-    usePokemonGame({ pairsCount: difficulty.pairs, maxFails: difficulty.maxFails });
+  const {
+    cards,
+    flipped,
+    matched,
+    attempts,
+    fails,
+    isGameOver,
+    isGameLost,
+    loading,
+    handleFlip,
+    resetGame
+  } = usePokemonGame({
+    pairsCount: difficulty.pairs,
+    maxFails: difficulty.maxFails
+  });
+
 
   const handleDifficultyChange = (level) => {
     if (level === 'easy') setDifficulty({ pairs: 6, maxFails: null });
@@ -28,10 +44,18 @@ function App() {
 
       {isGameOver && <p style={{ color: 'green' }}>¡Ganaste!</p>}
       {isGameLost && <p style={{ color: 'red' }}>Fin del juego. Superaste el máximo de fallos. REINICIANDO JUEGO</p>}
-      
-      <GameBoard cards={cards} flipped={flipped} matched={matched} handleFlip={handleFlip} />
+      {loading && <PokeballLoader />}
+      {!loading && (
+        <GameBoard
+          cards={cards}
+          flipped={flipped}
+          matched={matched}
+          handleFlip={handleFlip}
+        />
+      )}
+
     </div>
   );
 }
 
-export default App;
+export default App
